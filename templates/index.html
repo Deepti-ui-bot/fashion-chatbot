@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fashion Chatbot</title>
+    <style>
+        /* Global Styles */
+        body {
+            font-family: 'Arial', sans-serif;
+            background-image: url('static/images/im4.jpg'); /* Use your image here */
+            background-size: cover; /* Ensure it covers the whole page */
+            background-position: center; /* Center the background */
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            color: white;
+            text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.4);
+            margin-bottom: 20px;
+        }
+
+        /* Chatbox Styles */
+        #chat-box {
+            background-color: rgba(255, 255, 255, 0.8); /* Slightly transparent white background */
+            border-radius: 12px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            width: 400px;
+            max-height: 400px;
+            padding: 20px;
+            overflow-y: auto;
+            margin-bottom: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        #user-input {
+            width: 70%;
+            padding: 15px;
+            font-size: 1.1rem;
+            border: none;
+            border-radius: 8px;
+            margin-right: 10px;
+            outline: none;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        #send-btn {
+            padding: 15px;
+            font-size: 1.1rem;
+            background-color: #ff7e5f;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease-in-out;
+        }
+
+        #send-btn:hover {
+            background-color: #feb47b;
+        }
+
+        .user-message, .bot-message {
+            background-color: #f1f1f1;
+            padding: 10px 15px;
+            border-radius: 10px;
+            max-width: 80%;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .user-message {
+            background-color: #F5F5DC;
+            color: black;
+            align-self: flex-end;
+        }
+
+        .bot-message {
+            background-color: black;
+            color: #fff;
+            align-self: flex-start;
+        }
+
+        /* Animation for new messages */
+        .message {
+            opacity: 0;
+            animation: fadeIn 0.5s forwards;
+        }
+
+        @keyframes fadeIn {
+            0% {
+                opacity: 0;
+            }
+            100% {
+                opacity: 1;
+            }
+        }
+
+        /* Responsive Styling */
+        @media (max-width: 768px) {
+            #chat-box {
+                width: 90%;
+                padding: 15px;
+            }
+
+            #user-input {
+                width: 60%;
+            }
+
+            #send-btn {
+                padding: 12px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <h1>Fashion Chatbot</h1>
+    <div id="chat-box"></div>
+    <div style="display: flex; gap: 10px; justify-content: center;">
+        <input type="text" id="user-input" placeholder="Ask me about fashion...">
+        <button id="send-btn">Send</button>
+    </div>
+
+    <script>
+        const chatBox = document.getElementById('chat-box');
+        const userInput = document.getElementById('user-input');
+        const sendBtn = document.getElementById('send-btn');
+
+        sendBtn.addEventListener('click', () => {
+            const userText = userInput.value;
+            if (userText) {
+                // Display user message
+                chatBox.innerHTML += `<div class="user-message message"><strong>You:</strong> ${userText}</div>`;
+                userInput.value = '';
+                chatBox.scrollTop = chatBox.scrollHeight;
+
+                // Send message to server and get the response
+                fetch('/get_outfit', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ query: userText })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    // Display bot response
+                    chatBox.innerHTML += `<div class="bot-message message"><strong>Bot:</strong> ${data.suggestion}</div>`;
+                    chatBox.scrollTop = chatBox.scrollHeight;
+                });
+            }
+        });
+    </script>
+</body>
+</html>
