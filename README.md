@@ -26,6 +26,10 @@ This chatbot aims to make fashion decisions more convenient and fun by providing
   - JSON (for passing fashion suggestions)
 
 
+## Working
+<img width="1119" alt="image" src="https://github.com/user-attachments/assets/f10877ec-6cf8-44ff-ac76-c20e2ea08db7">
+
+
 ## License
 This project is open-source and available under the MIT License.
 
