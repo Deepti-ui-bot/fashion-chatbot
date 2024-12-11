@@ -31,7 +31,7 @@ This chatbot aims to make fashion decisions more convenient and fun by providing
 
 
 ## License
-This project is open-source and available under the MIT License.
+This project is open-source.
 
 ## Author 
 Deepti-ui-bot
